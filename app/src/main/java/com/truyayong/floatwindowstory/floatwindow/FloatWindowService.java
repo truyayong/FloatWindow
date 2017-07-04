@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import java.util.List;
 
@@ -53,12 +54,14 @@ public class FloatWindowService extends Service {
         private long lastUpdateWindowTime = System.currentTimeMillis();
 
         public void updateFloatWindow() {
+            Log.e(TAG, "[truyayong1] updateFloatWindow");
             long curTime = System.currentTimeMillis();
             //刷新频率过快，易导致Binder android.os.TransactionTooLargeException
-            if (curTime - lastUpdateWindowTime < 100) {
-                return;
-            }
-
+//            if (curTime - lastUpdateWindowTime < 100) {
+//                return;
+//            }
+            Log.e(TAG, "[truyayong1] isInApp() : " + isInApp() +
+                    " FloatWindowManager.isWindowShowing() + " + FloatWindowManager.isWindowShowing());
             if (!isInApp() && !FloatWindowManager.isWindowShowing()) {
                 FloatWindowManager.showShrinkWindow(getApplicationContext());
                 FloatWindowManager.removeExpandWindow(getApplicationContext());
