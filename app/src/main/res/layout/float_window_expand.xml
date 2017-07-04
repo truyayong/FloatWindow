@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/float_window_expand"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/fml"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/shrink_window"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/float_window"/>
+    </FrameLayout>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/fci_room"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_toLeftOf="@id/fml"
+        android:layout_above="@id/fml"
+        android:src="@drawable/float_window"/>
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/fci_mic"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_toLeftOf="@id/fml"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_centerVertical="true"
+        android:src="@drawable/float_window"/>
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/fci_ear"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_toLeftOf="@id/fml"
+        android:layout_below="@id/fml"
+        android:src="@drawable/float_window"
+        />
+
+</RelativeLayout>
