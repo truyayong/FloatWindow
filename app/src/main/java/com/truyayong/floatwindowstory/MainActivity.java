@@ -26,9 +26,7 @@ public class MainActivity extends AppCompatActivity {
         public void onServiceConnected(ComponentName name, IBinder service) {
             if (service != null && (service instanceof FloatWindowService.FloatWindowBinder)) {
                 floatWindowBinder = (FloatWindowService.FloatWindowBinder) service;
-                Log.e(TAG, "[truyayong1] onServiceConnected");
                 floatWindowBinder.updateFloatWindow();
-                floatWindowBinder.registerEnterMain(enterMainListener);
             }
         }
 
@@ -38,12 +36,6 @@ public class MainActivity extends AppCompatActivity {
                 floatWindowBinder.registerEnterMain(null);
             }
             floatWindowBinder = null;
-        }
-    };
-    FloatWindowService.EnterMainListener enterMainListener = new FloatWindowService.EnterMainListener() {
-        @Override
-        public void enterMain() {
-            Toast.makeText(MainActivity.this, "enter Mian", Toast.LENGTH_SHORT).show();
         }
     };
     @Override
@@ -60,9 +52,6 @@ public class MainActivity extends AppCompatActivity {
         if (floatWindowConn != null && floatWindowBinder == null) {
             Intent floatIntent = new Intent(this, FloatWindowService.class);
             bindService(floatIntent, floatWindowConn, Context.BIND_AUTO_CREATE);
-        }
-        if (floatWindowBinder != null) {
-            floatWindowBinder.registerEnterMain(enterMainListener);
         }
     }
 
@@ -84,6 +73,11 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         if (floatWindowBinder != null) {
             floatWindowBinder.updateFloatWindow();
+        }
+        if(floatWindowBinder != null) {
+            unbindService(floatWindowConn);
+            floatWindowBinder = null;
+            floatWindowConn = null;
         }
     }
 }

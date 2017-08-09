@@ -1,6 +1,7 @@
 package com.truyayong.floatwindowstory.floatwindow;
 
 import android.app.ActivityManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +11,8 @@ import android.os.IBinder;
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 import android.util.Log;
+
+import com.truyayong.floatwindowstory.MainActivity;
 
 import java.util.List;
 
@@ -25,6 +28,20 @@ public class FloatWindowService extends Service {
 
     @Override
     public void onCreate() {
+        enterMainListener = new EnterMainListener() {
+            @Override
+            public void enterMain() {
+                Intent intent = new Intent(FloatWindowService.this, MainActivity.class);
+                PendingIntent pendingIntent = PendingIntent.getActivity(FloatWindowService.this,0, intent,PendingIntent.FLAG_UPDATE_CURRENT);
+                try {
+                    pendingIntent.send();
+                } catch (PendingIntent.CanceledException e) {
+                    Log.e(TAG, "[truyayong] exception : ", e);
+                    e.printStackTrace();
+                }
+                FloatWindowManager.removeExpandWindow(FloatWindowService.this);
+            }
+        };
         super.onCreate();
     }
 
@@ -51,17 +68,7 @@ public class FloatWindowService extends Service {
 
     public class FloatWindowBinder extends Binder {
 
-        private long lastUpdateWindowTime = System.currentTimeMillis();
-
         public void updateFloatWindow() {
-            Log.e(TAG, "[truyayong1] updateFloatWindow");
-            long curTime = System.currentTimeMillis();
-            //刷新频率过快，易导致Binder android.os.TransactionTooLargeException
-//            if (curTime - lastUpdateWindowTime < 100) {
-//                return;
-//            }
-            Log.e(TAG, "[truyayong1] isInApp() : " + isInApp() +
-                    " FloatWindowManager.isWindowShowing() + " + FloatWindowManager.isWindowShowing());
             if (!isInApp() && !FloatWindowManager.isWindowShowing()) {
                 FloatWindowManager.showShrinkWindow(getApplicationContext());
                 FloatWindowManager.removeExpandWindow(getApplicationContext());
@@ -69,12 +76,6 @@ public class FloatWindowService extends Service {
                 FloatWindowManager.removeExpandWindow(getApplicationContext());
                 FloatWindowManager.removeShrinkWindow(getApplicationContext());
             }
-
-            lastUpdateWindowTime = curTime;
-        }
-
-        public void registerEnterMain(@Nullable EnterMainListener listener) {
-            enterMainListener = listener;
         }
     }
 

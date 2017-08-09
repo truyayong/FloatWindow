@@ -9,6 +9,8 @@ import android.widget.LinearLayout;
 
 import com.truyayong.floatwindowstory.R;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 /**
  * Created by Administrator on 2017/7/4.
  */
@@ -41,11 +43,20 @@ public class FloatWindowExpand extends LinearLayout {
      */
     private WindowManager.LayoutParams mParams;
 
-    public FloatWindowExpand(Context context) {
+    private CircleImageView fci_room;
+
+    public FloatWindowExpand(final Context context) {
         super(context);
         windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         LayoutInflater.from(context).inflate(R.layout.float_window_expand, this);
         View view = findViewById(R.id.float_window_expand);
+        fci_room = (CircleImageView)view.findViewById(R.id.fci_room);
+        fci_room.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               FloatWindowService.enterMainListener.enterMain();
+            }
+        });
         viewHeight = view.getLayoutParams().height;
         viewWidth = view.getLayoutParams().width;
     }
@@ -58,6 +69,8 @@ public class FloatWindowExpand extends LinearLayout {
             case MotionEvent.ACTION_MOVE:
                 break;
             case MotionEvent.ACTION_UP:
+                FloatWindowManager.removeExpandWindow(getContext());
+                FloatWindowManager.showShrinkWindow(getContext());
                 break;
             default:
                 break;
