@@ -36,7 +36,6 @@ public class FloatWindowService extends Service {
                 try {
                     pendingIntent.send();
                 } catch (PendingIntent.CanceledException e) {
-                    Log.e(TAG, "[truyayong] exception : ", e);
                     e.printStackTrace();
                 }
                 FloatWindowManager.removeExpandWindow(FloatWindowService.this);

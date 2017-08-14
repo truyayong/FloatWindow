@@ -32,9 +32,6 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            if (floatWindowBinder != null) {
-                floatWindowBinder.registerEnterMain(null);
-            }
             floatWindowBinder = null;
         }
     };
